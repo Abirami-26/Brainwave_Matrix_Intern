@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Blog Home</title>
+</head>
+<body>
+    <h1>Welcome to the Blog Home!</h1>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <ul>
+          {% for category, message in messages %}
+            <li><strong>{{ category.capitalize() }}:</strong> {{ message }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+
+    {% if current_user.is_authenticated %}
+      <p>Hello, {{ current_user.username }}!</p>
+      <a href="{{ url_for('create_post') }}">Create New Post</a>
+      <a href="{{ url_for('logout') }}">Logout</a>
+    {% else %}
+      <a href="{{ url_for('login') }}">Login</a> |
+      <a href="{{ url_for('register') }}">Register</a>
+    {% endif %}
+    <hr>
+
+<h2>All Posts</h2>
+{% for post in posts %}
+  <h3>{{ post.title }}</h3>
+  <p>{{ post.content }}</p>
+  <small>by User ID: {{ post.author_id }}</small>
+  <hr>
+{% else %}
+  <p>No posts yet.</p>
+{% endfor %}
+</body>
+</html>
